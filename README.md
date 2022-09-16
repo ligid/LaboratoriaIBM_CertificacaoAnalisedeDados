@@ -26,7 +26,7 @@ Objetivos de aprendizagem:<br>
 ✔ Organizar e comunicar as descobertas<br>
 ✔ Organizar os dados em tabelas<br>
 ✔ Visualizar dados em planilhas<br>
-  
+   <br>
 <b><a href="https://github.com/ligid/LaboratoriaIBM_CertificacaoAnalisedeDados/tree/main/projeto1" target="_blank"> Projeto 1 - Resolução e Dashboard </b> 
   
 ## Projeto 2: Retenção da Partida Tecnológica<br>
@@ -40,7 +40,7 @@ Objetivos de aprendizagem:<br>
 ✔ Realizar uma análise de coorte<br>
 ✔ Seleção e filtragem de dados através de consultas<br>
 ✔ Tomar decisões comerciais baseadas em dados<br>
-
+  <br>
  <b><a href="https://github.com/ligid/LaboratoriaIBM_CertificacaoAnalisedeDados/tree/main/projeto2" target="_blank"> Projeto 2 - Resolução e Dashboard </b> 
 
 ## Projeto 3: Segmentação de clientes no comércio eletrônico
@@ -109,7 +109,7 @@ Objetivos de Aprendizagem:<br>
 ## Projeto Extra - Bicicletas compartilhadas
   
 <br>
-Neste projeto opcional foi avaliada a capacidade de realizar análises descritivas de dados e resolução de problemas. Neste projeto a análise exploratória é a partir de um conjunto de dados sobre o uso de um programa de bicicletas compartilhadas Citibike.
+Neste projeto opcional foi avaliada a capacidade de realizar análises descritivas de dados e resolução de problemas. Neste projeto a análise exploratória é a partir de um conjunto de dados sobre o uso de um programa de bicicletas compartilhadas Citibike.<br>
 <br>
 <b><a href="https://github.com/ligid/LaboratoriaIBM_CertificacaoAnalisedeDados/tree/main/projetoextra_ibm" target="_blank"> Projeto 7 - Resolução e Dashboard </b> 
 
