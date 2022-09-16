@@ -111,5 +111,5 @@ Objetivos de Aprendizagem:<br>
 <br>
 Neste projeto opcional foi avaliada a capacidade de realizar análises descritivas de dados e resolução de problemas. Neste projeto a análise exploratória é a partir de um conjunto de dados sobre o uso de um programa de bicicletas compartilhadas Citibike.
 <br>
-<b><a href="(https://github.com/ligid/LaboratoriaIBM_CertificacaoAnalisedeDados/tree/main/projetoextra_ibm)" target="_blank"> Projeto 7 - Resolução e Dashboard </b> 
+<b><a href="https://github.com/ligid/LaboratoriaIBM_CertificacaoAnalisedeDados/tree/main/projetoextra_ibm" target="_blank"> Projeto 7 - Resolução e Dashboard </b> 
 
