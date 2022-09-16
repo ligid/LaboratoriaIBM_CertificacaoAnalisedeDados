@@ -62,9 +62,10 @@ Objetivos de aprendizagem:<br>
 ## Projeto 4: Análise de cancelamentos de hotéis
 <br>
 Simulação de um trabalho no setor de turismo analisando dados históricos de uma rede hoteleira.<br>
-
+  <br>
 Objetivos de aprendizagem:<br>
-✔ Organizar e manipular dados usando SQL: entenda os principais comandos SQL (i.e. SELECT, FROM, WHERE, GROUP BY, ORDER BY, AVG, COUNT). Use a linguagem SQL para gerenciar as informações armazenadas no BigQuery. Limpe, filtre e resuma os dados de acordo com a necessidade do negócio.<br>  
+ 
+✔ Organizar e manipular dados usando SQL: entenda os principais comandos SQL (i.e. SELECT, FROM, WHERE, GROUP BY, ORDER BY, AVG, COUNT). Use a linguagem SQL para gerenciar as informações armazenadas no BigQuery. Limpe, filtre e resuma os dados de acordo com a necessidade do negócio.<br>
 ✔ Tomar decisões de negócios com base em dados: resuma e organize os dados de forma a encontrar informações importantes para apoiar uma decisão de negócios. Entenda os prós e os contras de tal decisão e opere dentro de uma certa margem de erro.<br>
 ✔ Visualizar dados em uma ferramenta de Business Intelligence (BI): conheça o ambiente de desenho do PowerBI, mostre os principais indicadores e as estruturas em um dashboard que permite ao negócio obter conclusões acionáveis.<br>
 ✔ Organizar e comunicar as descobertas: estruture sua análise em um relatório claro e organizado. Comunique efetivamente as conclusões a que chegou em seu projeto.<br>
