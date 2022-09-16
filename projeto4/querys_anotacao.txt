@@ -1,0 +1,179 @@
+# cancelamentos por data (5.1.1) - pt 1
+CREATE TABLE `big-liberty-354700.bookings_hotel.canceled_date`
+AS
+SELECT
+   booking_date,
+  SUM (lead_time) AS reservas_hotel,
+  COUNTIF (is_canceled = 1) AS canceled,
+  COUNTIF (is_canceled = 0) AS not_canceled
+FROM `big-liberty-354700.bookings_hotel.booking_date`
+GROUP BY 
+     booking_date
+
+#cancelamentos por data (5.1.2) - pt 2
+CREATE TABLE `notional-mantra-360422.bookings_hotel.canceled_date_2`
+AS
+SELECT *,
+SAFE_MULTIPLY(canceled, 1.5) AS canceled_payment,
+SAFE_MULTIPLY(not_canceled, 1.5) AS not_canceled_payment
+FROM `notional-mantra-360422.bookings_hotel.canceled_date`
+
+
+# dias entre cancelamento e reserva (5.1) - caminho sugerido pelo guia (NÃO FUNCIONOU)
+CREATE TABLE `big-liberty-354700.bookings_hotel.MKT`
+AS
+SELECT
+   booking_date,
+  COUNT(lead_time) AS reservas_hotel,
+  COUNTIF(is_canceled = 1) AS canceled,
+  COUNTIF (is_canceled = 0) AS not_canceled
+  AS canceled_payments
+  AS not_canceled_payments
+FROM `big-liberty-354700.bookings_hotel.booking_date`
+GROUP BY 
+     booking_date
+ORDER BY
+  booking_date ASC  
+
+# dias entre cancelamento e reserva (5.2.2) - pt 1
+CREATE TABLE `big-liberty-354700.bookings_hotel.canceled_bookings_days_diff` 
+AS
+SELECT 
+  booking_date,
+DATE_DIFF (arrival_date_2, reservation_status_date, DAY) AS day_between_cancelation_and_arrival
+FROM `big-liberty-354700.bookings_hotel.booking_date`
+
+# Cancelamento com menos de 3 dias (5.2.2)- orientação do guia
+CREATE TABLE `big-liberty-354700.bookings_hotel.cancelation_less_3_days` 
+AS
+SELECT
+  booking_date,
+  COUNT(day_between_cancelation_and_arrival) AS number_cancelations_less_3_days,
+    COUNT(number_cancelations_less_3_days) * 120 AS financial_impact
+FROM `big-liberty-354700.bookings_hotel.canceled_bookings_days_diff`
+WHERE
+  day_between_cancelation_and_arrival < 3
+GROUP BY
+  booking_date
+
+# Cancelamento com menos de 3 dias (5.2.2) - adaptação
+CREATE TABLE `big-liberty-354700.bookings_hotel.cancelation_less_3_days` 
+AS
+SELECT
+  booking_date,
+  COUNT(day_between_cancelation_and_arrival) AS number_cancelations_less_3_days,
+FROM `big-liberty-354700.bookings_hotel.canceled_bookings_days_diff`
+WHERE
+  day_between_cancelation_and_arrival < 3
+GROUP BY
+  booking_date
+
+CREATE TABLE `big-liberty-354700.bookings_hotel.financial_impact` 
+AS
+SELECT *,
+ SAFE_MULTIPLY (number_cancelations_less_3_days, 120) AS financial_impact
+FROM `big-liberty-354700.bookings_hotel.cancelation_less_3_days`
+
+# lead time period (entre 15-30, 30-60, 60-90, etc) (6.1.1)
+CREATE TABLE `big-liberty-354700.bookings_hotel.lead_time_period`
+AS
+SELECT *,
+CASE
+    WHEN lead_time < 15 THEN 'Entre 0 e 15'
+    WHEN lead_time BETWEEN 16 and 30 THEN 'Entre 15 e 30'  
+    WHEN lead_time BETWEEN 31 and 60 THEN 'Entre 30 e 60'
+    WHEN lead_time BETWEEN 61 and 90 THEN 'Entre 60 e 90'
+    WHEN lead_time BETWEEN 91 and 180 THEN 'Entre 90 e 180'
+    WHEN lead_time BETWEEN 181 and 360 THEN 'Entre 180 e 360'
+	  ELSE 'Maior que 360'
+    END AS lead_time_period
+FROM `big-liberty-354700.bookings_hotel.booking_date`
+
+# taxa de cancelamento por categoria (6.1.2)
+CREATE TABLE `big-liberty-354700.bookings_hotel.taxa_de_cancelamento`
+AS
+SELECT
+  AVG(is_canceled) as taxa_de_cancelamento,
+  lead_time_period
+FROM
+ `big-liberty-354700.bookings_hotel.lead_time_period`
+GROUP BY
+  lead_time_period
+
+# reservas com crianças (6.2.1)
+CREATE TABLE `big-liberty-354700.bookings_hotel.children_category`
+AS
+SELECT *,
+CASE
+    WHEN children = 0 and babies = 0 THEN 'Sem criança'
+  ELSE 'Com criança'
+    END AS children_category
+FROM `big-liberty-354700.bookings_hotel.lead_time_period`
+
+# taxa de cancelamento por categoria (6.2.2)
+CREATE TABLE `big-liberty-354700.bookings_hotel.children_cancelamento`
+AS
+SELECT
+  AVG(is_canceled) as taxa_de_cancelamento,
+  children_category
+FROM
+ `big-liberty-354700.bookings_hotel.children_category`
+GROUP BY
+  children_category
+
+# com alteração na reserva (6.3.1)
+CREATE TABLE `big-liberty-354700.bookings_hotel.booking_changes_category`
+AS
+SELECT *,
+CASE
+    WHEN booking_changes = 0 THEN 'Sem alterações'
+WHEN booking_changes BETWEEN 1 and 10 THEN 'Entre 1 e 10 alterações'
+  ELSE '10 alterações ou mais'
+    END AS booking_changes_category
+FROM `big-liberty-354700.bookings_hotel.children_category`
+
+# taxa de cancelamento por categoria (6.3.2)
+CREATE TABLE `big-liberty-354700.bookings_hotel.booking_changes_category_cancelamento`
+AS
+SELECT
+  AVG(is_canceled) as taxa_de_cancelamento,
+  booking_changes_category
+FROM
+ `big-liberty-354700.bookings_hotel.booking_changes_category`
+GROUP BY
+  booking_changes_category
+
+# taxa de cancelamento solicitação especial (6.4)
+CREATE TABLE `big-liberty-354700.bookings_hotel.special_requests_cancelamento`
+AS
+SELECT
+  AVG(is_canceled) as taxa_cancelamento_special_requests,
+  total_of_special_requests
+FROM
+ `big-liberty-354700.bookings_hotel.booking_changes_category`
+GROUP BY
+  total_of_special_requests
+
+# adr (6.5.1)
+CREATE TABLE `big-liberty-354700.bookings_hotel.adr_category`
+AS
+SELECT *,
+CASE
+  WHEN adr < 100 THEN 'Até 100'
+  WHEN adr BETWEEN 101 and 200 THEN 'Entre 101 e 200'
+  WHEN adr BETWEEN 201 and 300 THEN 'Entre 201 e 300'
+  WHEN adr BETWEEN 301 and 400 THEN 'Entre 301 e 400'
+  ELSE 'Acima de 400'
+    END AS adr_category
+FROM `big-liberty-354700.bookings_hotel.booking_changes_category`
+
+# adr (6.5.2)
+CREATE TABLE `big-liberty-354700.bookings_hotel.adr_category_cancelamento`
+AS
+SELECT
+  AVG(is_canceled) as adr_category_cancelamento,
+  adr_category
+FROM
+ `big-liberty-354700.bookings_hotel.adr_category`
+GROUP BY
+  adr_category
